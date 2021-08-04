@@ -135,7 +135,9 @@ public class PaymentService {
             public void run() {
                 synchronized (payment.getPayId().intern()) {
                     // 使用2分钟之前的Payment到数据库中查出当前的Payment
-                    Payment currentPayment = paymentRepository.findById(payment.getId()).orElseThrow(() -> new EntityNotFoundException(payment.getId().toString()));
+                    Payment currentPayment = paymentRepository.findById(payment.getId());
+                    if (currentPayment == null)
+                        throw new EntityNotFoundException(payment.getPayId());
                     if (currentPayment.getPayState() == Payment.State.WAITING) {
                         log.info("支付单{}当前状态为：WAITING，转变为：TIMEOUT", payment.getId());
                         accomplishSettlement(Payment.State.TIMEOUT, payment.getPayId());

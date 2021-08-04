@@ -18,9 +18,10 @@
 
 package com.github.fenixsoft.bookstore.domain.warehouse;
 
-import org.springframework.data.repository.CrudRepository;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 商品对象数据仓库
@@ -28,8 +29,16 @@ import java.util.Collection;
  * @author icyfenix@gmail.com
  * @date 2020/3/6 20:56
  **/
-public interface ProductRepository extends CrudRepository<Product, Integer> {
+@Mapper
+public interface ProductRepository {
 
     Collection<Product> findByIdIn(Collection<Integer> ids);
 
+    List<Product> findAll();
+
+    Product findById(Integer id);
+
+    Product save(Product product);
+
+    void deleteById(Integer id);
 }

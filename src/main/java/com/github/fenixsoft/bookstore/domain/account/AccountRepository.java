@@ -19,13 +19,14 @@
 package com.github.fenixsoft.bookstore.domain.account;
 
 import com.sun.xml.bind.v2.model.core.ID;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -34,12 +35,11 @@ import java.util.Optional;
  * @author icyfenix@gmail.com
  * @date 2020/3/6 23:10
  **/
+@Mapper
 @CacheConfig(cacheNames = "repository.account")
-public interface AccountRepository extends CrudRepository<Account, Integer> {
+public interface AccountRepository {
 
-    @Override
-    Iterable<Account> findAll();
-
+    List<Account> findAll();
 
     @Cacheable(key = "#username")
     Account findByUsername(String username);
@@ -73,13 +73,13 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
     <S extends Account> Iterable<S> saveAll(Iterable<S> entities);
 
     @Cacheable(key = "#id")
-    Optional<Account> findById(ID id);
+    Account findById(ID id);
 
     @Cacheable(key = "#id")
-    boolean existsById(ID id);
+    boolean existsById(Integer id);
 
     @CacheEvict(key = "#id")
-    void deleteById(ID id);
+    void deleteById(Integer id);
 
     @CacheEvict(key = "#entity.id")
     void delete(Account entity);

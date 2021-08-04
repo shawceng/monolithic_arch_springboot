@@ -18,8 +18,10 @@
 
 package com.github.fenixsoft.bookstore.domain.warehouse;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 /**
  * 广告对象数据仓库
@@ -27,6 +29,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author icyfenix@gmail.com
  * @date 2020/3/7 10:51
  **/
-public interface AdvertisementRepository extends CrudRepository<Advertisement, Integer> {
-    Iterable<Advertisement> findAll() throws DataAccessException;
+@Mapper
+public interface AdvertisementRepository {
+    List<Advertisement> findAll() throws DataAccessException;
 }

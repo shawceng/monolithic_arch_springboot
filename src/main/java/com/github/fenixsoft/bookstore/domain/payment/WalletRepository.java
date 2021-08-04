@@ -18,6 +18,7 @@
 
 package com.github.fenixsoft.bookstore.domain.payment;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
@@ -28,8 +29,10 @@ import java.util.Optional;
  * @author icyfenix@gmail.com
  * @date 2020/3/12 16:35
  **/
-public interface WalletRepository extends CrudRepository<Wallet, Integer> {
+@Mapper
+public interface WalletRepository {
 
-    Optional<Wallet> findByAccountId(Integer accountId);
+    Wallet findByAccountId(Integer accountId);
 
+    void save(Wallet newWallet);
 }

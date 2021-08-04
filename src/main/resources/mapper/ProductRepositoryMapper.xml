@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.fenixsoft.bookstore.domain.warehouse.ProductRepository">
+    <select id="findAll" resultType="Product">
+        SELECT * FROM product
+    </select>
+
+    <select id="findById" resultType="Product">
+        SELECT * FROM product WHERE id=#{id}
+    </select>
+
+    <insert id="save" parameterType="Product">
+        INSERT INTO product (id, title, price, rate, description, cover, detail)
+        VALUES (id, title, price, rate, description, cover, detail)
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM product
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findByIdIn" resultType="Product" >
+        SELECT * FROM product WHERE id IN
+            <foreach collection="list" item="productId" open="(" close=")" separator=",">
+                #{productId}
+            </foreach>
+    </select>
+</mapper>

@@ -18,7 +18,8 @@
 
 package com.github.fenixsoft.bookstore.domain.payment;
 
-import org.springframework.data.repository.CrudRepository;
+
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 库存数据仓库
@@ -26,7 +27,10 @@ import org.springframework.data.repository.CrudRepository;
  * @author icyfenix@gmail.com
  * @date 2020/3/12 16:36
  **/
-public interface StockpileRepository extends CrudRepository<Stockpile, Integer> {
+@Mapper
+public interface StockpileRepository {
 
+    Stockpile findById(Integer productId);
 
+    void save(Stockpile stock);
 }

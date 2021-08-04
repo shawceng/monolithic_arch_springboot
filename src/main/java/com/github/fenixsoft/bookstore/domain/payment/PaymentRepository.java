@@ -18,9 +18,10 @@
 
 package com.github.fenixsoft.bookstore.domain.payment;
 
-import org.springframework.data.repository.CrudRepository;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Optional;
+
 
 /**
  * 支付单数据仓库
@@ -28,8 +29,12 @@ import java.util.Optional;
  * @author icyfenix@gmail.com
  * @date 2020/3/12 23:25
  **/
-public interface PaymentRepository extends CrudRepository<Payment, Integer> {
+@Mapper
+public interface PaymentRepository {
 
     Payment getByPayId(String payId);
 
+    void save(Payment payment);
+
+    Payment findById(Integer id);
 }
