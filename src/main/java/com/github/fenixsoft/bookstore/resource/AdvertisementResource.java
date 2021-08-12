@@ -20,6 +20,8 @@ package com.github.fenixsoft.bookstore.resource;
 
 import com.github.fenixsoft.bookstore.domain.warehouse.Advertisement;
 import com.github.fenixsoft.bookstore.domain.warehouse.AdvertisementRepository;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -40,11 +42,11 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class AdvertisementResource {
 
-    @Inject
+    @Autowired
     AdvertisementRepository repository;
 
     @GET
-    @Cacheable("resource.advertisements")
+    @RedisCacheable("ALL_ADVERTISEMENT")
     public Iterable<Advertisement> getAllAdvertisements() {
         return repository.findAll();
     }

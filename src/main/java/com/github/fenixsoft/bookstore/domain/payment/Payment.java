@@ -34,7 +34,6 @@ import java.util.UUID;
  * @author icyfenix@gmail.com
  * @date 2020/3/12 17:07
  **/
-@Entity
 public class Payment extends BaseEntity {
 
     /**

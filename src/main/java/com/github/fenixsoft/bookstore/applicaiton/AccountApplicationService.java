@@ -20,11 +20,16 @@ package com.github.fenixsoft.bookstore.applicaiton;
 
 import com.github.fenixsoft.bookstore.domain.account.Account;
 import com.github.fenixsoft.bookstore.domain.account.AccountRepository;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheEvict;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheOption;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCachePut;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheable;
 import com.github.fenixsoft.bookstore.infrastructure.utility.Encryption;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+import javax.ws.rs.PUT;
 
 /**
  * 用户资源的应用服务接口
@@ -42,17 +47,29 @@ public class AccountApplicationService {
     @Inject
     private Encryption encoder;
 
+    @RedisCacheOption(
+            cacheEvict = {
+                    @RedisCacheEvict("ALL_USER")
+            }
+    )
     public void createAccount(Account account) {
         account.setPassword(encoder.encode(account.getPassword()));
         repository.save(account);
     }
 
+    @RedisCacheable("USER:{}")
     public Account findAccountByUsername(String username) {
         return repository.findByUsername(username);
     }
 
+    @RedisCacheOption(
+            cacheEvict = {
+                    @RedisCacheEvict("USER:{username}"),
+                    @RedisCacheEvict("ALL_USER")
+            }
+    )
     public void updateAccount(Account account) {
-        repository.save(account);
+        repository.update(account);
     }
 
 }

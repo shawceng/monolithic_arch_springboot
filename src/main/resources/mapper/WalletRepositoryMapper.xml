@@ -7,7 +7,11 @@
         select * FROM advertisement;
     </select>
 
+    <select id="findByAccountId" resultType="Wallet">
+        SELECT * FROM wallet where account_id=#{accountId}
+    </select>
+
     <insert id="save">
-        INSERT INTO wallet (id, money, account_id) VALUES (id, money, account_id)
+            INSERT INTO wallet (id, money, account_id) VALUES (id, money, account_id)
     </insert>
 </mapper>

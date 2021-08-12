@@ -18,10 +18,8 @@
 
 package com.github.fenixsoft.bookstore.domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 
 /**
@@ -30,11 +28,8 @@ import java.io.Serializable;
  * @author icyfenix@gmail.com
  * @date 2020/3/6 10:52
  **/
-@MappedSuperclass
 public class BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     public Integer getId() {

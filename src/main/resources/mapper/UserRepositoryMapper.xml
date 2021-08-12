@@ -12,12 +12,28 @@
     </select>
 
     <select id="findByUsername" resultType="Account">
-        SELECT * FROM account where name=#{username}
+        SELECT * FROM account WHERE username=#{username}
     </select>
 
     <insert id="save">
-        INSERT INTO account (id, username, password, name, avatar, telephone, email, location)
-        VALUES (#{id}, #{username}, #{password}, #{name}, #{avatar}, #{telephone}, #{email}, #{location})
+        INSERT INTO account (username, password, name, avatar, telephone, email, location)
+        VALUES (#{username}, #{password}, #{name}, #{avatar}, #{telephone}, #{email}, #{location})
+        ON DUPLICATE KEY UPDATE location=#{location}
     </insert>
 
+    <update id="update">
+        UPDATE account
+        SET location=#{location}, telephone=#{telephone}
+        WHERE id=#{id}
+    </update>
+
+    <select id="existsByUsernameOrEmailOrTelephone" resultType="boolean">
+        SELECT COUNT(*) FROM account
+        WHERE username=#{username} or email=#{email} or telephone=#{telephone} limit 1
+    </select>
+
+    <select id="findByUsernameOrEmailOrTelephone" resultType="Account">
+        SELECT * FROM account
+        WHERE username=#{username} or email=#{email} or telephone=#{telephone} limit 1
+    </select>
 </mapper>

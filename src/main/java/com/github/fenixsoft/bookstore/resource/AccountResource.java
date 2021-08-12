@@ -23,6 +23,10 @@ import com.github.fenixsoft.bookstore.domain.account.Account;
 import com.github.fenixsoft.bookstore.domain.account.validation.AuthenticatedAccount;
 import com.github.fenixsoft.bookstore.domain.account.validation.NotConflictAccount;
 import com.github.fenixsoft.bookstore.domain.account.validation.UniqueAccount;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheEvict;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheOption;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCachePut;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheable;
 import com.github.fenixsoft.bookstore.infrastructure.jaxrs.CommonResponse;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -45,7 +49,6 @@ import javax.ws.rs.core.Response;
  **/
 @Path("/accounts")
 @Component
-@CacheConfig(cacheNames = "resource.account")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AccountResource {
@@ -58,7 +61,6 @@ public class AccountResource {
      */
     @GET
     @Path("/{username}")
-    @Cacheable(key = "#username")
     public Account getUser(@PathParam("username") String username) {
         return service.findAccountByUsername(username);
     }
@@ -67,7 +69,6 @@ public class AccountResource {
      * 创建新的用户
      */
     @POST
-    @CacheEvict(key = "#user.username")
     public Response createUser(@Valid @UniqueAccount Account user) {
         return CommonResponse.op(() -> service.createAccount(user));
     }
@@ -76,7 +77,6 @@ public class AccountResource {
      * 更新用户信息
      */
     @PUT
-    @CacheEvict(key = "#user.username")
     public Response updateUser(@Valid @AuthenticatedAccount @NotConflictAccount Account user) {
         return CommonResponse.op(() -> service.updateAccount(user));
     }

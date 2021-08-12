@@ -33,7 +33,6 @@ import javax.persistence.OneToOne;
  * @date 2020/3/12 16:30
  **/
 
-@Entity
 public class Wallet extends BaseEntity {
 
     // 这里是偷懒，正式项目中请使用BigDecimal来表示金额

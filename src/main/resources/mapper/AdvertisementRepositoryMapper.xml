@@ -3,7 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.fenixsoft.bookstore.domain.warehouse.AdvertisementRepository">
-    <select id="findAll" resultType="com.github.fenixsoft.bookstore.domain.warehouse.Advertisement">
-        select * FROM advertisement;
+
+    <select id="findAll" resultType="Advertisement">
+        select * FROM advertisement
     </select>
+
 </mapper>

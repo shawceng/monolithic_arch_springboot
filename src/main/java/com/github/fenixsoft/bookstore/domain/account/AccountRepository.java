@@ -18,16 +18,13 @@
 
 package com.github.fenixsoft.bookstore.domain.account;
 
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheEvict;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheable;
 import com.sun.xml.bind.v2.model.core.ID;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 用户对象数据仓库
@@ -36,12 +33,11 @@ import java.util.Optional;
  * @date 2020/3/6 23:10
  **/
 @Mapper
-@CacheConfig(cacheNames = "repository.account")
 public interface AccountRepository {
 
     List<Account> findAll();
 
-    @Cacheable(key = "#username")
+    @RedisCacheable("USER:{}")
     Account findByUsername(String username);
 
     /**
@@ -57,36 +53,31 @@ public interface AccountRepository {
     /**
      * 判断存在性，用户名存在即为存在
      */
-    @Cacheable(key = "#username")
+    @RedisCacheable("USER:{}")
     boolean existsByUsername(String username);
 
 
     // 覆盖以下父类中需要处理缓存失效的方法
     // 父类取不到CacheConfig的配置信息，所以不能抽象成一个通用的父类接口中完成
-    @Caching(evict = {
-            @CacheEvict(key = "#entity.id"),
-            @CacheEvict(key = "#entity.username")
-    })
-    <S extends Account> S save(S entity);
+    void save(Account entity);
 
-    @CacheEvict
+    void update(Account entity);
+
     <S extends Account> Iterable<S> saveAll(Iterable<S> entities);
 
-    @Cacheable(key = "#id")
+    @RedisCacheable("USER:{}")
     Account findById(ID id);
 
-    @Cacheable(key = "#id")
+    @RedisCacheable("USER:{}")
     boolean existsById(Integer id);
 
-    @CacheEvict(key = "#id")
+    @RedisCacheable("USER:{}")
     void deleteById(Integer id);
 
-    @CacheEvict(key = "#entity.id")
+    @RedisCacheEvict("{id}")
     void delete(Account entity);
 
-    @CacheEvict(allEntries = true)
     void deleteAll(Iterable<? extends Account> entities);
 
-    @CacheEvict(allEntries = true)
     void deleteAll();
 }

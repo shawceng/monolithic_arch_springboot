@@ -20,8 +20,6 @@ package com.github.fenixsoft.bookstore.domain.warehouse;
 
 import com.github.fenixsoft.bookstore.domain.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -31,7 +29,6 @@ import javax.validation.constraints.NotNull;
  * @author icyfenix@gmail.com
  * @date 2020/3/6 19:33
  **/
-@Entity
 public class Specification extends BaseEntity {
 
     @NotEmpty(message = "商品规格名称不允许为空")
@@ -41,7 +38,6 @@ public class Specification extends BaseEntity {
     private String value;
 
     @NotNull(message = "商品规格必须归属于指定商品")
-    @Column(name = "product_id")
     private Integer productId;
 
     public String getItem() {

@@ -21,7 +21,6 @@ package com.github.fenixsoft.bookstore.domain.payment;
 import com.github.fenixsoft.bookstore.domain.BaseEntity;
 import com.github.fenixsoft.bookstore.domain.warehouse.Product;
 
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -32,7 +31,6 @@ import javax.persistence.OneToOne;
  * @author icyfenix@gmail.com
  * @date 2020/3/12 16:34
  **/
-@Entity
 public class Stockpile extends BaseEntity {
 
     private Integer amount;

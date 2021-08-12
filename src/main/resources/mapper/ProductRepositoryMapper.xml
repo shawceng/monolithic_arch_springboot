@@ -3,8 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.fenixsoft.bookstore.domain.warehouse.ProductRepository">
-    <select id="findAll" resultType="Product">
+    <resultMap id="ProductMap" type="Product">
+        <id property="id" column="id"/>
+        <result column="title" property="title"/>
+        <result column="price" property="price"/>
+        <result column="rate" property="rate"/>
+        <result column="description" property="description"/>
+        <result column="cover" property="cover"/>
+        <result column="detail" property="detail"/>
+        <collection property="specifications" column="id" ofType="Specification" select="findSpecById">
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="ProductMap">
         SELECT * FROM product
+    </select>
+
+    <select id="findSpecById" resultType="Specification">
+        select * from specification where product_id=#{id}
     </select>
 
     <select id="findById" resultType="Product">
@@ -12,13 +28,12 @@
     </select>
 
     <insert id="save" parameterType="Product">
-        INSERT INTO product (id, title, price, rate, description, cover, detail)
-        VALUES (id, title, price, rate, description, cover, detail)
+        INSERT INTO product (title, price, rate, description, cover, detail)
+        VALUES (title, price, rate, description, cover, detail)
     </insert>
 
     <delete id="deleteById">
-        DELETE FROM product
-        WHERE id = #{id}
+        DELETE FROM product WHERE id = #{id}
     </delete>
 
     <select id="findByIdIn" resultType="Product" >

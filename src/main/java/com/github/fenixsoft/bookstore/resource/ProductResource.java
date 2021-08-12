@@ -22,6 +22,10 @@ import com.github.fenixsoft.bookstore.applicaiton.ProductApplicationService;
 import com.github.fenixsoft.bookstore.domain.auth.Role;
 import com.github.fenixsoft.bookstore.domain.payment.Stockpile;
 import com.github.fenixsoft.bookstore.domain.warehouse.Product;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheEvict;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheOption;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCachePut;
+import com.github.fenixsoft.bookstore.infrastructure.cache.annotation.RedisCacheable;
 import com.github.fenixsoft.bookstore.infrastructure.jaxrs.CommonResponse;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -45,7 +49,6 @@ import javax.ws.rs.core.Response;
 
 @Path("/products")
 @Component
-@CacheConfig(cacheNames = "resource.product")
 @Produces(MediaType.APPLICATION_JSON)
 public class ProductResource {
 
@@ -56,7 +59,8 @@ public class ProductResource {
      * 获取仓库中所有的货物信息
      */
     @GET
-    @Cacheable(key = "'ALL_PRODUCT'")
+//    @Cacheable(key = "'ALL_PRODUCT'")
+    @RedisCacheable(value = "ALL_PRODUCT")
     public Iterable<Product> getAllProducts() {
         return service.getAllProducts();
     }
@@ -66,7 +70,8 @@ public class ProductResource {
      */
     @GET
     @Path("/{id}")
-    @Cacheable(key = "#id")
+//    @Cacheable(key = "#id")
+    @RedisCacheable(value = "PRODUCT:{}")
     public Product getProduct(@PathParam("id") Integer id) {
         return service.getProduct(id);
     }
@@ -75,9 +80,9 @@ public class ProductResource {
      * 更新产品信息
      */
     @PUT
-    @Caching(evict = {
-            @CacheEvict(key = "#product.id"),
-            @CacheEvict(key = "'ALL_PRODUCT'")
+    @RedisCacheOption(cacheEvict = {
+            @RedisCacheEvict("PRODUCT:{}"),
+            @RedisCacheEvict("ALL_PRODUCT")
     })
     @RolesAllowed(Role.ADMIN)
     public Response updateProduct(@Valid Product product) {
@@ -88,10 +93,14 @@ public class ProductResource {
      * 创建新的产品
      */
     @POST
-    @Caching(evict = {
-            @CacheEvict(key = "#product.id"),
-            @CacheEvict(key = "'ALL_PRODUCT'")
-    })
+    @RedisCacheOption(
+            cacheEvict = {
+                    @RedisCacheEvict("ALL_PRODUCT")
+            },
+            cachePut = {
+                    @RedisCachePut("PRODUCT:{}")
+            }
+    )
     @RolesAllowed(Role.ADMIN)
     public Product createProduct(@Valid Product product) {
         return service.saveProduct(product);
@@ -102,9 +111,9 @@ public class ProductResource {
      */
     @DELETE
     @Path("/{id}")
-    @Caching(evict = {
-            @CacheEvict(key = "#id"),
-            @CacheEvict(key = "'ALL_PRODUCT'")
+    @RedisCacheOption(cacheEvict = {
+            @RedisCacheEvict("PRODUCT:{}"),
+            @RedisCacheEvict("ALL_PRODUCT")
     })
     @RolesAllowed(Role.ADMIN)
     public Response removeProduct(@PathParam("id") Integer id) {

@@ -2,18 +2,23 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.github.fenixsoft.bookstore.domain.payment.Payment">
-    <select id="findAll" resultType="com.github.fenixsoft.bookstore.domain.payment.Payment">
+<mapper namespace="com.github.fenixsoft.bookstore.domain.payment.PaymentRepository">
+    <select id="findAll" resultType="Payment">
         select *
         from payment;
     </select>
 
-    <select id="findById"  resultType="com.github.fenixsoft.bookstore.domain.payment.Payment">
+    <select id="findById"  resultType="Payment">
         select * from payment where id=#{id}
     </select>
 
-    <select id="findByPayId" resultType="com.github.fenixsoft.bookstore.domain.payment.Payment">
+    <select id="getByPayId" resultType="Payment">
         select * from payment where pay_id=#{payId}
     </select>
+
+    <insert id="save">
+        INSERT INTO payment (pay_id, create_time, total_price, expires, payment_link, pay_state)
+        VALUES (#{payId}, #{createTime}, #{totalPrice}, #{expires}, #{paymentLink}, #{payState})
+    </insert>
 
 </mapper>

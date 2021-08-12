@@ -20,6 +20,7 @@ package com.github.fenixsoft.bookstore.domain.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.fenixsoft.bookstore.domain.BaseEntity;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +34,6 @@ import javax.validation.constraints.Pattern;
  * @author icyfenix@gmail.com
  * @date 2020/3/6 23:08
  */
-@Entity
 public class Account extends BaseEntity {
 
     @NotEmpty(message = "用户不允许为空")

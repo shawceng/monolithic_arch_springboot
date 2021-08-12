@@ -20,7 +20,6 @@ package com.github.fenixsoft.bookstore.domain.warehouse;
 
 import com.github.fenixsoft.bookstore.domain.BaseEntity;
 
-import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -33,7 +32,6 @@ import java.util.Set;
  * @author icyfenix@gmail.com
  * @date 2020/3/6 10:43
  */
-@Entity
 public class Product extends BaseEntity {
 
     @NotEmpty(message = "商品名称不允许为空")
@@ -54,8 +52,6 @@ public class Product extends BaseEntity {
 
     private String detail;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
     private Set<Specification> specifications;
 
     public String getTitle() {

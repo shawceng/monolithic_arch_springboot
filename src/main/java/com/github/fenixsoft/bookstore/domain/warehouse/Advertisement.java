@@ -20,8 +20,6 @@ package com.github.fenixsoft.bookstore.domain.warehouse;
 
 import com.github.fenixsoft.bookstore.domain.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -31,14 +29,12 @@ import javax.validation.constraints.NotNull;
  * @author icyfenix@gmail.com
  * @date 2020/3/7 10:49
  **/
-@Entity
 public class Advertisement extends BaseEntity {
 
     @NotEmpty(message = "广告图片不允许为空")
     private String image;
 
     @NotNull(message = "广告应当有关联的商品")
-    @Column(name = "product_id")
     private Integer productId;
 
     public String getImage() {
